@@ -5,3 +5,8 @@ generics==7.0.0
 sqlparse==0.5.3
 tzdata==2025.2
 gunicorn
+
+# These help ensure builds succeed
+pip>=21.0
+setuptools>=42
+wheel
