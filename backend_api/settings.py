@@ -16,6 +16,8 @@ from corsheaders.defaults import default_headers
 import os
 from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
+import dj_database_url
+from urllib.parse import urlparse
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -131,11 +133,14 @@ WSGI_APPLICATION = 'backend_api.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=env("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True  # Ensures `?sslmode=require` is respected
+    )
 }
+
+
 
 
 # Password validation
@@ -145,6 +150,7 @@ SITE_ID = 1                          # required
 
 # ─── Allauth behaviour ──────────────
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_LOGIN_METHODS = { "username" }   # <- new, modern flag
 ACCOUNT_SIGNUP_FIELDS = ["username*", "email*", "password1*", "password2*"]
 ACCOUNT_UNIQUE_EMAIL = True
@@ -176,13 +182,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # --- E-mail (dev) ---------------------------------
-def env(key: str, default: str | None = None):
-    """Tiny helper: env var or default (if provided)."""
-    val = os.getenv(key, default)
-    if val is None:
-        raise ImproperlyConfigured(f"Missing required environment variable {key}")
-    return val
-
 EMAIL_BACKEND      = env("EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
 EMAIL_HOST         = env("EMAIL_HOST", "smtp-relay.brevo.com")
 EMAIL_PORT         = int(env("EMAIL_PORT", 587))
@@ -233,6 +232,11 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+'''
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+'''
 
 
 
