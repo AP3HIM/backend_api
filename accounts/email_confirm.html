@@ -1,0 +1,57 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>{% trans "Confirm Email" %}</title>
+  <style>
+    body {
+      font-family: Futura, sans-serif;
+      color: #fff;
+      background-color: #111;
+      padding: 30px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      border: 1px solid #444;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #1a1a1a;
+    }
+    button,
+    a.button {
+      background: #e58209;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 4px;
+      border: none;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      display: inline-block;
+    }
+    p {
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Welcome to Paper Tiger Cinema!</h2>
+    {% if confirmation %}
+      <p>Hey {{ confirmation.email_address.user.username }},</p>
+      <p>Please confirm your email address by clicking the button below:</p>
+      <form method="post">
+        {% csrf_token %}
+        <button type="submit">{% trans "Confirm Email" %}</button>
+      </form>
+      <p>If you didn’t sign up, you can safely ignore this email.</p>
+    {% else %}
+      {% url 'account_email' as email_url %}
+      <p>This confirmation link is invalid or has expired. Please <a href="{{ email_url }}" class="button">request a new one</a>.</p>
+    {% endif %}
+  </div>
+</body>
+</html>
