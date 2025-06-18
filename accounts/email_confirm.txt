@@ -1,7 +1,0 @@
-Hi {{ user.username }}!
-
-Please click the link below to confirm your e-mail address for Paper Tiger Cinema:
-
-{{ activate_url }}
-
-If you didn’t sign up, just ignore this e-mail.
