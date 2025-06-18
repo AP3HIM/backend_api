@@ -9,3 +9,5 @@ gunicorn==21.2.0
 pip>=21.0
 setuptools>=42
 wheel
+
+django-cors-headers==4.3.1
