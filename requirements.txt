@@ -11,3 +11,4 @@ setuptools>=42
 wheel
 
 django-cors-headers==4.3.1
+python-dotenv==1.0.1
