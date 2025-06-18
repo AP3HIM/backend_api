@@ -1,12 +1,11 @@
-﻿asgiref==3.8.1
+asgiref==3.8.1
 Django==5.2.1
 djangorestframework==3.16.0
 generics==7.0.0
 sqlparse==0.5.3
 tzdata==2025.2
-gunicorn
+gunicorn==21.2.0
 
-# These help ensure builds succeed
 pip>=21.0
 setuptools>=42
 wheel
