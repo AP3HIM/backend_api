@@ -48,7 +48,7 @@ DEBUG = False
 
 
 
-ALLOWED_HOSTS = ["papertigercinema.com", "www.papertigercinema.com"]
+ALLOWED_HOSTS = ["papertigercinema.com", "www.papertigercinema.com", "paper-tiger-backend.onrender.com"]
 
 
 # Application definition
