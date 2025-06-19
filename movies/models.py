@@ -2,14 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Movie(models.Model):
-    title = models.CharField(max_length=255, unique=True)
+    title = models.CharField(max_length=500, unique=True)
     overview = models.TextField(blank=True)
     year = models.IntegerField(blank=True, null=True)
-    genre = models.CharField(max_length=100, blank=True)
-    video_url = models.URLField()  # Direct .mp4 or similar
-    thumbnail_url = models.URLField(blank=True)
+    genre = models.CharField(max_length=150, blank=True)
+    video_url = models.URLField(max_length=500)  # Direct .mp4 or similar
+    thumbnail_url = models.URLField(max_length=500, blank=True)
     runtime_minutes = models.IntegerField(blank=True, null=True)
-    archive_identifier = models.CharField(max_length=200, unique=True, null=True)
+    archive_identifier = models.CharField(max_length=600, unique=True, null=True)
     is_featured = models.BooleanField(default=False)  # NEW
     views = models.IntegerField(default=0)  # NEW
     is_public_domain = models.BooleanField(default=True)
