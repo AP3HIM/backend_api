@@ -275,6 +275,12 @@ SIMPLE_JWT = {
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://papertigercinema.com",
+    "https://www.papertigercinema.com",
+]
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
