@@ -210,6 +210,9 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # <- Optional fallback
 
 ACCOUNT_ADAPTER = "accounts.adapters.CustomAccountAdapter"
 
+ACCOUNT_EMAIL_CONFIRMATION_URL = "https://papertigercinema.com/accounts/confirm-email/{key}/"
+
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
