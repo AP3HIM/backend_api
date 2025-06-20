@@ -166,7 +166,7 @@ ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
 
 
 # optional: nicer errors from allauth
-ACCOUNT_ADAPTER = "allauth.account.adapter.DefaultAccountAdapter"
+ACCOUNT_ADAPTER = "accounts.adapters.CustomAccountAdapter"
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -206,9 +206,6 @@ ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "https://papertigercinema.com/login"
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "https://papertigercinema.com/login"
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # <- Optional fallback
-
-
-ACCOUNT_ADAPTER = "accounts.adapters.CustomAccountAdapter"
 
 ACCOUNT_EMAIL_CONFIRMATION_URL = "https://papertigercinema.com/accounts/confirm-email/{key}/"
 
