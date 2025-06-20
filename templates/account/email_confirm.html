@@ -43,7 +43,7 @@
     {% if confirmation %}
       <p>Hey {{ confirmation.email_address.user.username }},</p>
       <p>Please confirm your email address by clicking the button below:</p>
-      <form method="post">
+      <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
         {% csrf_token %}
         <button type="submit">{% trans "Confirm Email" %}</button>
       </form>
