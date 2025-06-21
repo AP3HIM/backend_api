@@ -13,4 +13,4 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         return user
 
     def get_email_confirmation_url(self, request, emailconfirmation):
-        return f"https://papertigercinema.com/api/auth/account-confirm-email/{emailconfirmation.key}/"
+        return f"https://papertigercinema.com/confirm-email/{emailconfirmation.key}/"
