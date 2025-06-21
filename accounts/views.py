@@ -11,6 +11,9 @@ from allauth.account.models import EmailAddress
 from allauth.account.utils import send_email_confirmation
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .jwt import VerifiedEmailTokenSerializer
+from allauth.account.models import EmailConfirmationHMAC
+from django.shortcuts import redirect
+from django.http import Http404
 
 class ResendConfirmationView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -44,3 +47,13 @@ def user_profile(request):
 
 class VerifiedEmailTokenView(TokenObtainPairView):
     serializer_class = VerifiedEmailTokenSerializer
+
+def confirm_email(request, key):
+    try:
+        confirmation = EmailConfirmationHMAC.from_key(key)
+        if confirmation:
+            confirmation.confirm(request)
+            return redirect("https://papertigercinema.com/login")
+    except Exception:
+        pass
+    raise Http404("Confirmation link invalid or expired.")
