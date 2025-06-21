@@ -14,6 +14,6 @@ urlpatterns = [
     path('protected/', ProtectedView.as_view(), name='protected'),
     path('profile/', user_profile),
     path("resend-confirm/", ResendConfirmationView.as_view()),
-    path('auth/account-confirm-email/<key>/', redirect_confirm_email, name='account_confirm_email'),
+    path('confirm-email/<key>/', redirect_confirm_email, name='account_confirm_email'),
     path('auth/', include('dj_rest_auth.registration.urls')),  # <-- this is critical
 ]
