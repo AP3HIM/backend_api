@@ -207,7 +207,6 @@ ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "https://papertigercinema.co
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "https://papertigercinema.com/login"
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # <- Optional fallback
 
-ACCOUNT_EMAIL_CONFIRMATION_URL = "https://papertigercinema.com/accounts/confirm-email/{key}/"
 
 
 LOGGING = {
