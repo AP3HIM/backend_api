@@ -49,11 +49,8 @@ class VerifiedEmailTokenView(TokenObtainPairView):
     serializer_class = VerifiedEmailTokenSerializer
 
 def confirm_email(request, key):
-    try:
-        confirmation = EmailConfirmationHMAC.from_key(key)
-        if confirmation:
-            confirmation.confirm(request)
-            return redirect("https://papertigercinema.com/login")
-    except Exception:
-        pass
-    raise Http404("Confirmation link invalid or expired.")
+    confirmation = EmailConfirmationHMAC.from_key(key)
+    if confirmation:
+        confirmation.confirm(request)
+        return redirect("https://papertigercinema.com/login")
+    return render(request, "email_confirmation_invalid.html", status=400)
