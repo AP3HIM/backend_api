@@ -11,6 +11,10 @@ from allauth.account.models import EmailAddress
 from allauth.account.utils import send_email_confirmation
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .jwt import VerifiedEmailTokenSerializer
+from allauth.account.models import EmailConfirmationHMAC
+from django.shortcuts import redirect
+from django.http import HttpResponse
+
 
 class ResendConfirmationView(APIView):
     permission_classes = [permissions.AllowAny]
@@ -44,3 +48,10 @@ def user_profile(request):
 
 class VerifiedEmailTokenView(TokenObtainPairView):
     serializer_class = VerifiedEmailTokenSerializer
+
+def redirect_confirm_email(request, key):
+    confirmation = EmailConfirmationHMAC.from_key(key)
+    if confirmation:
+        confirmation.confirm(request)
+    # Always redirect to login page after confirming
+    return redirect("https://papertigercinema.com/login")
