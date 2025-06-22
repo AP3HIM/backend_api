@@ -209,62 +209,61 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # <- Optional fallback
 
 
 
-# settings.py (full file provided previously, only showing LOGGING part now)
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'formatters': { # Add a formatter to make log messages more readable
+    'formatters': {
         'verbose': {
             'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
             'style': '{',
         },
-        'simple': { # A simpler format for console output
-            'format': '{levelname} {message}',
+        'simple': {
+            # FIX: Added {name} and {levelname} for basic identification
+            'format': '{name} {levelname}: {message}',
+            'style': '{',
         },
     },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'simple', # Use the simple formatter for console
+            'formatter': 'simple',
         },
     },
     'loggers': {
-        'django': { # General Django logger, useful for catching broad issues
+        'django': {
             'handlers': ['console'],
-            'level': 'INFO', # Set to INFO to see more detail from Django itself
-            'propagate': False, # Prevent messages from being sent to root logger twice
+            'level': 'INFO',
+            'propagate': False,
         },
         'django.request': {
             'handlers': ['console'],
-            'level': 'DEBUG', # Keep this at DEBUG for request/response details
+            'level': 'DEBUG',
             'propagate': False,
         },
         'django.db.backends': {
             'handlers': ['console'],
-            'level': 'DEBUG', # Keep this at DEBUG for DB query details
+            'level': 'DEBUG',
             'propagate': False,
         },
-        'accounts': { # <--- ADD THIS LOGGER FOR YOUR ACCOUNTS APP
+        'accounts': {
             'handlers': ['console'],
-            'level': 'INFO', # Set to INFO to see your custom logger.info messages
-            'propagate': False, # Important: Don't propagate to root logger if you want specific control
-        },
-        'allauth': { # <--- ADD THIS LOGGER FOR ALLAUTH SPECIFIC MESSAGES
-            'handlers': ['console'],
-            'level': 'INFO', # Allauth also has its own logging
+            'level': 'INFO',
             'propagate': False,
         },
-        # You can add more specific loggers for other apps if needed, e.g., 'movies'
+        'allauth': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
         'movies': {
             'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
     },
-    'root': { # Configure the root logger as a fallback
+    'root': {
         'handlers': ['console'],
-        'level': 'WARNING', # Default for unconfigured loggers. Can be INFO if you want verbosity.
+        'level': 'WARNING',
     }
 }
 
