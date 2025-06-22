@@ -11,7 +11,7 @@ urlpatterns = [
     path('api/', include('accounts.urls')),
     path("api/auth/", include("allauth.urls")),
     path("api/token/", VerifiedEmailTokenView.as_view(), name="token_obtain_pair"),
-    path("accounts/", include("allauth.urls")),  # Handles confirm-email/<key> with Allauth default view
+    # path("accounts/", include("allauth.urls")),  # Handles confirm-email/<key> with Allauth default view
 ]
 
 if settings.DEBUG:
