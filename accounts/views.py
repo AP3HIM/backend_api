@@ -15,6 +15,10 @@ from allauth.account.models import EmailConfirmationHMAC
 from django.shortcuts import redirect
 from django.http import HttpResponse
 
+import logging # Add this import
+logger = logging.getLogger(__name__) # Initialize logger for this module
+
+
 
 class ResendConfirmationView(APIView):
     permission_classes = [permissions.AllowAny]
