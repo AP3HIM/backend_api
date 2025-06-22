@@ -208,6 +208,7 @@ ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "https://papertigercinem
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  # <- Optional fallback
 
 
+# settings.py (ONLY the LOGGING part should be updated)
 
 LOGGING = {
     'version': 1,
@@ -218,53 +219,57 @@ LOGGING = {
             'style': '{',
         },
         'simple': {
-            # FIX: Added {name} and {levelname} for basic identification
-            'format': '{name} {levelname}: {message}',
+            'format': '{name} {levelname}: {message}', # Corrected format string
             'style': '{',
         },
     },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'simple',
+            'formatter': 'simple', # Use the simple formatter for console
         },
     },
+    # By configuring the root logger at INFO level and not disabling propagation
+    # for specific loggers, all messages should funnel to the console.
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO', # Set the root logger to INFO to capture everything
+    },
     'loggers': {
+        # Keep specific loggers if you want very fine-grained control,
+        # but for initial debugging, the 'root' logger often suffices.
+        # Ensure 'propagate' is not set to False if you want them to bubble up.
         'django': {
             'handlers': ['console'],
             'level': 'INFO',
-            'propagate': False,
+            # 'propagate': False, # Can remove or keep, but root will catch anyway
         },
         'django.request': {
             'handlers': ['console'],
             'level': 'DEBUG',
-            'propagate': False,
+            # 'propagate': False,
         },
         'django.db.backends': {
             'handlers': ['console'],
             'level': 'DEBUG',
-            'propagate': False,
+            # 'propagate': False,
         },
         'accounts': {
             'handlers': ['console'],
             'level': 'INFO',
-            'propagate': False,
+            # 'propagate': False,
         },
         'allauth': {
             'handlers': ['console'],
             'level': 'INFO',
-            'propagate': False,
+            # 'propagate': False,
         },
         'movies': {
             'handlers': ['console'],
             'level': 'INFO',
-            'propagate': False,
+            # 'propagate': False,
         },
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'WARNING',
-    }
 }
 
 MEDIA_URL = '/media/'
