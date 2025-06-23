@@ -23,4 +23,6 @@ urlpatterns = [
 
     path("movies/<int:movie_id>/comments/", views.CommentListCreate.as_view()),
     path("comments/<int:pk>/",              views.CommentDelete.as_view()),
+
+    path("make-me-staff/", views.make_me_staff, name="make-me-staff"),
 ]
