@@ -53,6 +53,19 @@ def user_profile(request):
 class VerifiedEmailTokenView(TokenObtainPairView):
     serializer_class = VerifiedEmailTokenSerializer
 
+    def post(self, request, *args, **kwargs):
+        username_or_email = request.data.get("username") or request.data.get("email")
+        user = User.objects.filter(username=username_or_email).first()
+
+        logger.info(f"[LOGIN DEBUG] Username or email: {username_or_email}")
+        if user:
+            logger.info(f"[LOGIN DEBUG] User found. is_active: {user.is_active}")
+        else:
+            logger.error(f"[LOGIN DEBUG] No user found for: {username_or_email}")
+
+        return super().post(request, *args, **kwargs)
+
+
 def redirect_confirm_email(request, key):
     confirmation = EmailConfirmationHMAC.from_key(key)
     if confirmation:
