@@ -16,4 +16,5 @@ urlpatterns = [
     path("resend-confirm/", ResendConfirmationView.as_view()),
     path('confirm-email/<key>/', redirect_confirm_email, name='account_confirm_email'),
     path('auth/', include('dj_rest_auth.registration.urls')),  # <-- this is critical
+    path('api/confirm-email/<key>/', redirect_confirm_email, name='account_confirm_email'),  # 👈 ADD THIS
 ]
