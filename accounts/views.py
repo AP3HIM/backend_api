@@ -57,6 +57,10 @@ def redirect_confirm_email(request, key):
     
     confirmation = EmailConfirmationHMAC.from_key(key)
 
+    # Define the target URLs as variables to ensure they are plain strings
+    login_page_url = "[https://papertigercinema.com/login](https://papertigercinema.com/login)"
+    invalid_link_page_url = "[https://papertigercinema.com/invalid-confirmation-link](https://papertigercinema.com/invalid-confirmation-link)" # Define if uncommented
+
     if confirmation:
         user = confirmation.email_address.user
         email_address = confirmation.email_address
@@ -99,8 +103,8 @@ def redirect_confirm_email(request, key):
     else:
         logger.warning(f"redirect_confirm_email: No valid email confirmation found for key: {key}. This link may be expired or invalid.")
         # Optional: Redirect to an invalid link page for a better user experience
-        # return redirect("[https://papertigercinema.com/invalid-confirmation-link](https://papertigercinema.com/invalid-confirmation-link)") # Plain string URL here
+        # return redirect(invalid_link_page_url) # Using the plain string variable
 
     # Always redirect to login page after processing (or failing to process) confirmation
-    return redirect("[https://papertigercinema.com/login](https://papertigercinema.com/login)") # Plain string URL here
+    return redirect(login_page_url) # Using the plain string variable
 
