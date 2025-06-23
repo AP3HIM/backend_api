@@ -64,24 +64,19 @@ def redirect_confirm_email(request, key):
         logger.info(f"redirect_confirm_email: Found confirmation for user: {user.username}, email: {email_address.email}")
         
         # --- START: Explicit Activation & Verification Logic ---
-        # Refresh from DB to ensure we're working with the latest state before any updates
         user.refresh_from_db()
         email_address.refresh_from_db()
         logger.info(f"redirect_confirm_email: State BEFORE explicit update - User active: {user.is_active}, Email verified: {email_address.verified}")
 
         try:
-            # Try allauth's confirmation method first. This might set `verified=True` and trigger signals.
             confirmation.confirm(request)
             logger.info(f"redirect_confirm_email: allauth's confirmation.confirm() called for {user.username}.")
         except Exception as e:
-            # Log any error if allauth's confirm fails, but proceed to try manual activation
             logger.error(f"redirect_confirm_email: Error during allauth's confirmation.confirm() for {user.username}: {e}", exc_info=True)
 
-        # Refresh from DB again to pick up any changes from allauth.confirm()
         user.refresh_from_db()
         email_address.refresh_from_db()
 
-        # Explicitly set is_active and verified if they are not already True
         if not user.is_active:
             user.is_active = True
             user.save(update_fields=["is_active"])
@@ -96,7 +91,6 @@ def redirect_confirm_email(request, key):
         else:
             logger.info(f"redirect_confirm_email: Email {email_address.email} was already verified. No change needed.")
         
-        # Final state check after all operations for logging
         user.refresh_from_db()
         email_address.refresh_from_db()
         logger.info(f"redirect_confirm_email: Final state for {user.username}: is_active={user.is_active}, email_verified={email_address.verified}")
@@ -105,8 +99,8 @@ def redirect_confirm_email(request, key):
     else:
         logger.warning(f"redirect_confirm_email: No valid email confirmation found for key: {key}. This link may be expired or invalid.")
         # Optional: Redirect to an invalid link page for a better user experience
-        # return redirect("[https://papertigercinema.com/invalid-confirmation-link](https://papertigercinema.com/invalid-confirmation-link)") # Corrected URL here
+        # return redirect("[https://papertigercinema.com/invalid-confirmation-link](https://papertigercinema.com/invalid-confirmation-link)") # Plain string URL here
 
     # Always redirect to login page after processing (or failing to process) confirmation
-    return redirect("[https://papertigercinema.com/login](https://papertigercinema.com/login)") # Corrected URL here
+    return redirect("[https://papertigercinema.com/login](https://papertigercinema.com/login)") # Plain string URL here
 
