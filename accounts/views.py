@@ -15,9 +15,8 @@ from allauth.account.models import EmailConfirmationHMAC
 from django.shortcuts import redirect
 from django.http import HttpResponse
 
-import logging # Add this import
-logger = logging.getLogger(__name__) # Initialize logger for this module
-
+import logging
+logger = logging.getLogger(__name__)
 
 
 class ResendConfirmationView(APIView):
@@ -54,8 +53,60 @@ class VerifiedEmailTokenView(TokenObtainPairView):
     serializer_class = VerifiedEmailTokenSerializer
 
 def redirect_confirm_email(request, key):
+    logger.info(f"redirect_confirm_email: Attempting to confirm email with key: {key}")
+    
     confirmation = EmailConfirmationHMAC.from_key(key)
+
     if confirmation:
-        confirmation.confirm(request)
-    # Always redirect to login page after confirming
-    return redirect("https://papertigercinema.com/login")
+        user = confirmation.email_address.user
+        email_address = confirmation.email_address
+
+        logger.info(f"redirect_confirm_email: Found confirmation for user: {user.username}, email: {email_address.email}")
+        
+        # --- START: Explicit Activation & Verification Logic ---
+        # Refresh from DB to ensure we're working with the latest state before any updates
+        user.refresh_from_db()
+        email_address.refresh_from_db()
+        logger.info(f"redirect_confirm_email: State BEFORE explicit update - User active: {user.is_active}, Email verified: {email_address.verified}")
+
+        try:
+            # Try allauth's confirmation method first. This might set `verified=True` and trigger signals.
+            confirmation.confirm(request)
+            logger.info(f"redirect_confirm_email: allauth's confirmation.confirm() called for {user.username}.")
+        except Exception as e:
+            # Log any error if allauth's confirm fails, but proceed to try manual activation
+            logger.error(f"redirect_confirm_email: Error during allauth's confirmation.confirm() for {user.username}: {e}", exc_info=True)
+
+        # Refresh from DB again to pick up any changes from allauth.confirm()
+        user.refresh_from_db()
+        email_address.refresh_from_db()
+
+        # Explicitly set is_active and verified if they are not already True
+        if not user.is_active:
+            user.is_active = True
+            user.save(update_fields=["is_active"])
+            logger.info(f"redirect_confirm_email: User {user.username} explicitly activated (is_active=True).")
+        else:
+            logger.info(f"redirect_confirm_email: User {user.username} was already active. No change needed.")
+
+        if not email_address.verified:
+            email_address.verified = True
+            email_address.save(update_fields=["verified"])
+            logger.info(f"redirect_confirm_email: Email {email_address.email} explicitly marked as verified (verified=True).")
+        else:
+            logger.info(f"redirect_confirm_email: Email {email_address.email} was already verified. No change needed.")
+        
+        # Final state check after all operations for logging
+        user.refresh_from_db()
+        email_address.refresh_from_db()
+        logger.info(f"redirect_confirm_email: Final state for {user.username}: is_active={user.is_active}, email_verified={email_address.verified}")
+        # --- END: Explicit Activation & Verification Logic ---
+
+    else:
+        logger.warning(f"redirect_confirm_email: No valid email confirmation found for key: {key}. This link may be expired or invalid.")
+        # Optional: Redirect to an invalid link page for a better user experience
+        # return redirect("[https://papertigercinema.com/invalid-confirmation-link](https://papertigercinema.com/invalid-confirmation-link)")
+
+    # Always redirect to login page after processing (or failing to process) confirmation
+    return redirect("[https://papertigercinema.com/login](https://papertigercinema.com/login)")
+
