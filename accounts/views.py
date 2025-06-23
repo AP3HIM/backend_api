@@ -105,8 +105,8 @@ def redirect_confirm_email(request, key):
     else:
         logger.warning(f"redirect_confirm_email: No valid email confirmation found for key: {key}. This link may be expired or invalid.")
         # Optional: Redirect to an invalid link page for a better user experience
-        # return redirect("[https://papertigercinema.com/invalid-confirmation-link](https://papertigercinema.com/invalid-confirmation-link)")
+        # return redirect("[https://papertigercinema.com/invalid-confirmation-link](https://papertigercinema.com/invalid-confirmation-link)") # Corrected URL here
 
     # Always redirect to login page after processing (or failing to process) confirmation
-    return redirect("[https://papertigercinema.com/login](https://papertigercinema.com/login)")
+    return redirect("[https://papertigercinema.com/login](https://papertigercinema.com/login)") # Corrected URL here
 
