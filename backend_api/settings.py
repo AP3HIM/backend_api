@@ -54,6 +54,7 @@ ALLOWED_HOSTS = ["papertigercinema.com", "www.papertigercinema.com", "paper-tige
 # Application definition
 
 INSTALLED_APPS = [
+    "jazzmin", 
     'django.contrib.admin',
     'django_extensions',
     'django.contrib.auth',
