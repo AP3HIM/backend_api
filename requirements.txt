@@ -16,6 +16,7 @@ django-cors-headers==4.3.1
 django-database-url==1.0.3
 django-extensions==3.2.3
 django-filter==24.2
+django-jazzmin==3.0.1
 djangorestframework==3.16.0
 djangorestframework-simplejwt==5.3.1
 docutils==0.19
