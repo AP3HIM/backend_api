@@ -57,5 +57,11 @@ def redirect_confirm_email(request, key):
     confirmation = EmailConfirmationHMAC.from_key(key)
     if confirmation:
         confirmation.confirm(request)
+         # Force user to be active right here
+        user = confirmation.email_address.user
+        if not user.is_active:
+            user.is_active = True
+            user.save(update_fields=["is_active"])
+            logger.info(f"[View] Set user {user.email} as active from confirm view.")
     # Always redirect to login page after confirming
     return redirect("https://papertigercinema.com/login")
