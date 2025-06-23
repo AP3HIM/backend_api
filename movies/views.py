@@ -280,3 +280,13 @@ def make_me_staff(request):
     user.is_staff = True
     user.save()
     return Response({"message": f"{user.username} is now staff."})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def make_me_superuser(request):
+    user = request.user
+    user.is_staff = True
+    user.is_superuser = True
+    user.save()
+    return Response({"message": f"{user.username} is now a superuser."})
+
