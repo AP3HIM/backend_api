@@ -6,6 +6,17 @@ from django.db import transaction # Import transaction to ensure atomicity
 import logging
 logger = logging.getLogger(__name__)
 
+'''
+# This signal receiver `activate_user_after_email_confirmation` is being temporarily disabled.
+# The logic for activating the user (setting `user.is_active = True`)
+# and ensuring the email is marked as verified (setting `email_address.verified = True`)
+# has been moved directly into the `redirect_confirm_email` view function
+# in `accounts/views.py`.
+
+# This change is a diagnostic and temporary measure to ensure user activation
+# happens reliably during email confirmation, especially in environments
+# where Django signal dispatching or `allauth`'s internal processes
+# might be inconsistent or difficult to debug without direct server access.
 
 @receiver(email_confirmed)
 def activate_user_after_email_confirmation(request, email_address, **kwargs):
@@ -40,3 +51,4 @@ def activate_user_after_email_confirmation(request, email_address, **kwargs):
             logger.error(f"[Signal] WARNING: Email address {email_address.email} still not verified after email_confirmed signal. This indicates a deeper allauth issue or a timing problem.")
         else:
             logger.info(f"[Signal] Email address {email_address.email} is confirmed (verified=True).")
+'''
