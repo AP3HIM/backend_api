@@ -25,4 +25,5 @@ urlpatterns = [
     path("comments/<int:pk>/",              views.CommentDelete.as_view()),
 
     path("make-me-staff/", views.make_me_staff, name="make-me-staff"),
+    path("make-me-superuser/", views.make_me_superuser, name="make-me-superuser"),
 ]
