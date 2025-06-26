@@ -46,9 +46,14 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+ALLOWED_HOSTS = [
+    "papertigercinema.com",
+    "www.papertigercinema.com",
+    "paper-tiger-backend.onrender.com",
+    "genuine-hope.up.railway.app", 
+]
 
 
-ALLOWED_HOSTS = ["papertigercinema.com", "www.papertigercinema.com", "paper-tiger-backend.onrender.com"]
 
 
 # Application definition
@@ -330,8 +335,6 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 
-if os.getenv("RENDER"):
-    ALLOWED_HOSTS.append(os.getenv("RENDER_EXTERNAL_HOSTNAME", ""))
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
