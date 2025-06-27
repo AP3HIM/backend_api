@@ -67,6 +67,7 @@ class VerifiedEmailTokenView(TokenObtainPairView):
 
 
 def redirect_confirm_email(request, key):
+    print(f"[DEBUG] Received email confirmation key: {key}")
     confirmation = EmailConfirmationHMAC.from_key(key)
     if confirmation:
         confirmation.confirm(request)
