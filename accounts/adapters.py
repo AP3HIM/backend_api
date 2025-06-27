@@ -27,4 +27,4 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         # This constructs the URL to your custom Django view that handles confirmation.
         # It should align with your main urls.py (path('api/', include('accounts.urls')))
         # and accounts/urls.py (path('confirm-email/<key>/', redirect_confirm_email)).
-        return f"{backend_base_url}/api/confirm-email/{emailconfirmation.key}/"
+        return f"{backend_base_url}/api/accounts/confirm-email/{emailconfirmation.key}/"
