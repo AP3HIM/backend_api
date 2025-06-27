@@ -50,6 +50,7 @@ ALLOWED_HOSTS = [
     "papertigercinema.com",
     "www.papertigercinema.com",
     "paper-tiger-backend.onrender.com",
+    "api.papertigercinema.com",
     "genuine-hope.up.railway.app", 
 ]
 
@@ -312,6 +313,7 @@ USE_TZ = True
 CORS_ALLOWED_ORIGINS = [
     "https://papertigercinema.com",
     "https://www.papertigercinema.com",
+    "https://api.papertigercinema.com",
 ]
 
 # If you need to allow credentials (like cookies or auth headers)
@@ -332,6 +334,7 @@ SIMPLE_JWT = {
 CSRF_TRUSTED_ORIGINS = [
     "https://papertigercinema.com",
     "https://www.papertigercinema.com",
+    "https://api.papertigercinema.com",
 ]
 
 
