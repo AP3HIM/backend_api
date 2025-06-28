@@ -1,24 +1,30 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify  # NEW
 
 class Movie(models.Model):
     title = models.CharField(max_length=500, unique=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)  # NEW
     overview = models.TextField(blank=True)
     year = models.IntegerField(blank=True, null=True)
     genre = models.CharField(max_length=150, blank=True)
-    video_url = models.URLField(max_length=500)  # Direct .mp4 or similar
+    video_url = models.URLField(max_length=500)
     thumbnail_url = models.URLField(max_length=500, blank=True)
     runtime_minutes = models.IntegerField(blank=True, null=True)
     archive_identifier = models.CharField(max_length=600, unique=True, null=True)
-    is_featured = models.BooleanField(default=False)  # NEW
-    views = models.IntegerField(default=0)  # NEW
+    is_featured = models.BooleanField(default=False)
+    views = models.IntegerField(default=0)
     is_public_domain = models.BooleanField(default=True)
-    is_hero = models.BooleanField(default=False)  # ✅ New field
+    is_hero = models.BooleanField(default=False)
 
-
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
+
 
 class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="movie_favorites")
