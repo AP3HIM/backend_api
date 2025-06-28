@@ -10,7 +10,7 @@ import requests, logging
 from .models import Movie, Favorite, WatchLater, PlaybackProgress, Comment
 from .serializers import MovieSerializer, FavoriteSerializer, WatchLaterSerializer, PlaybackProgressSerializer, CommentSerializer
 from rest_framework.views import APIView
-
+from django.core.management.base import BaseCommand
 
 log = logging.getLogger("django.request")
 
@@ -59,6 +59,12 @@ class HeroCarouselMovies(APIView):
         movies = Movie.objects.filter(is_hero=True).order_by('-year')  # optional: sort newest first
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data)
+    
+class MovieDetailSlug(generics.RetrieveAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    permission_classes = [AllowAny]
+    lookup_field = 'slug'
 
 @api_view(['GET'])
 def fetch_archive_movies(request):
