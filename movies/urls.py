@@ -2,9 +2,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.MovieList.as_view(), name='movie-list'),  # <- was 'movies/'
+    path('', views.MovieList.as_view(), name='movie-list'),
     path('<int:pk>/', views.MovieDetail.as_view(), name='movie-detail'),
-    path('import/', views.import_movies_view, name='import-movies'),
+    path('<slug:slug>/', views.MovieDetailSlug.as_view(), name='movie-detail-slug'),  # NEW
     path('fetch-archive/', views.fetch_archive_movies, name='fetch-archive'),
     path('increment-view/<int:movie_id>/', views.increment_view, name='increment-view'),
     path('hero-movies/', views.HeroCarouselMovies.as_view(), name='hero-carousel'),
