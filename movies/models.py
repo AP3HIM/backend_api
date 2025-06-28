@@ -4,7 +4,7 @@ from django.utils.text import slugify  # NEW
 
 class Movie(models.Model):
     title = models.CharField(max_length=500, unique=True)
-    slug = models.SlugField(unique=True, blank=True, null=True)  # NEW
+    slug = models.SlugField(max_length=150, unique=True, blank=True, null=True)  # NEW
     overview = models.TextField(blank=True)
     year = models.IntegerField(blank=True, null=True)
     genre = models.CharField(max_length=150, blank=True)
