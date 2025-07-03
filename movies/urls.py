@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from movies.sitemaps import MovieSitemap, StaticViewSitemap, GenreSitemap
+from django.contrib.sitemaps.views import sitemap
 
 sitemaps = {
     'movies': MovieSitemap,
@@ -34,5 +35,6 @@ urlpatterns = [
     path('<int:movie_id>/comments/', views.CommentListCreate.as_view()),
     path('comments/<int:pk>/', views.CommentDelete.as_view()),
 
-    path("sitemap.xml", sitemaps, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
+    #Sitemaps
+    path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap")
 ]
