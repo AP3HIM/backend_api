@@ -3,6 +3,15 @@ from django.urls import path, include
 from accounts.views import VerifiedEmailTokenView
 from django.conf import settings
 from django.conf.urls.static import static
+from movies.sitemaps import MovieSitemap, StaticViewSitemap, GenreSitemap
+from django.contrib.sitemaps.views import sitemap  # ← this was missing
+
+
+sitemaps = {
+    "movies": MovieSitemap,
+    "static": StaticViewSitemap,
+    "genres": GenreSitemap,
+}
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -10,6 +19,7 @@ urlpatterns = [
     path('api/accounts/', include('accounts.urls')),
     path("api/auth/", include("allauth.urls")),
     path("api/token/", VerifiedEmailTokenView.as_view(), name="token_obtain_pair"),
+    path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="sitemap"),  # ← add this
 ]
 
 if settings.DEBUG:
