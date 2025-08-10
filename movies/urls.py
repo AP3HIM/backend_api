@@ -7,9 +7,6 @@ urlpatterns = [
     # Movie details (slug-based)
     path('<slug:slug>/', views.MovieDetailSlug.as_view(), name='movie-detail-slug'),
 
-    # Increment view (slug-based)
-    path('increment-view/<slug:slug>/', views.increment_view_slug, name='increment-view-slug'),
-
     # Hero movies
     path('hero-movies/', views.HeroCarouselMovies.as_view(), name='hero-carousel'),
 
