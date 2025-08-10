@@ -227,19 +227,12 @@ def progress_list(request):
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticatedOrReadOnly])
-def update_progress(request):
-    _dbg_show_auth(request)
-    """Create or update progress for one movie."""
-    movie_id = request.data.get("movie_id")
-    position = request.data.get("position")         # seconds (int)
+def update_progress_slug(request, slug):
+    movie = get_object_or_404(Movie, slug=slug)
+    position = request.data.get("position")
 
-    if movie_id is None or position is None:
-        return Response({"error": "movie_id and position required"}, status=400)
-
-    try:
-        movie = Movie.objects.get(id=movie_id)
-    except Movie.DoesNotExist:
-        return Response({"error": "Movie not found"}, status=404)
+    if position is None:
+        return Response({"error": "Position required"}, status=400)
 
     row, _ = PlaybackProgress.objects.update_or_create(
         user=request.user,
@@ -247,7 +240,6 @@ def update_progress(request):
         defaults={"position": int(position)},
     )
     return Response({"success": True, "position": row.position})
-
 
 class CommentListCreate(generics.ListCreateAPIView):
     """
@@ -278,6 +270,19 @@ class CommentDelete(generics.DestroyAPIView):
         if instance.user != self.request.user and not self.request.user.is_staff:
             raise permissions.PermissionDenied("Not your comment.")
         super().perform_destroy(instance)
+
+class CommentListCreateSlug(generics.ListCreateAPIView):
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        movie = get_object_or_404(Movie, slug=self.kwargs["slug"])
+        return Comment.objects.filter(movie=movie)
+
+    def perform_create(self, serializer):
+        movie = get_object_or_404(Movie, slug=self.kwargs["slug"])
+        serializer.save(user=self.request.user, movie=movie)
+
 '''
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
