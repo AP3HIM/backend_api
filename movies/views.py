@@ -121,16 +121,7 @@ def fetch_archive_movies(request):
         return Response({"error": "Failed to fetch movies", "details": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
-@api_view(['POST'])
-def increment_view(request, movie_id):
-    try:
-        _dbg_show_auth(request)   
-        movie = Movie.objects.get(id=movie_id)
-        movie.views = (movie.views or 0) + 1
-        movie.save()
-        return Response({'success': True, 'views': movie.views})
-    except Movie.DoesNotExist:
-        return Response({'success': False, 'error': 'Movie not found'}, status=404)
+
 
 
 # ----------------------------
